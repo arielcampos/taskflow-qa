@@ -1,3 +1,80 @@
+# TaskFlow QA – Convert an Airtable Task into JSON
+
+## 1. Copy the Airtable task and turn it into JSON with AI
+
+Copy the full plain-text content of a task from Airtable (or any other source) and send it to an AI model together with the prompt below. The model returns a single JSON object that can be pasted directly into TaskFlow QA.
+
+The prompt tells the AI to convert the task text into JSON. The model must follow these rules:
+
+- Never invent information. Steps, tests, evidence, escalation points, modules, view names, counts and sharing targets come only from what the task text states explicitly. If something is missing, list it under `"missing"`.
+- Copy context sections, Escalate If conditions and Done When points **verbatim** (do not paraphrase).
+- Every work item and step must include a `"source"` array containing the exact passages from the original task that support it.
+- The overview must be 1–3 plain sentences in simple language (no field-level detail).
+- Create one work item per view, deliverable or distinct piece of work, and one break item per Break Case.
+- Escalate If contains only the escalation conditions themselves (no instructions on how to escalate, no reviewers, no hand-off text).
+- Rewrite Done When points in completed language for the handoff (“have been created”, “has been applied”, and so on) and end with “All acceptance criteria have been met.”
+
+### Prompt to send to the AI
+
+Send this prompt, then paste the full task text where indicated. Ask the model to return only the JSON.
+
+```text
+You convert a single plain-text development task into a structured JSON object for TaskFlow QA.
+
+Rules:
+- Never invent. Everything must come from the task text.
+- Verbatim for context sections, Escalate If and Done When.
+- Every item and step must have a "source" array with the exact supporting passages.
+- Overview = 1–3 plain sentences, no field-level detail.
+- One work item per view/deliverable; one break item per Break Case.
+- Escalate If = only the escalation conditions.
+- Done When points rewritten in completed language, ending with "All acceptance criteria have been met."
+
+Return only this JSON:
+
+{
+  "number": "",
+  "title": "",
+  "overview": "",
+  "items": [
+    {
+      "kind": "work",
+      "title": "",
+      "module": "",
+      "sentence": "",
+      "existing": false,
+      "fields": [],
+      "source": [],
+      "build": [],
+      "steps": [
+        {
+          "text": "",
+          "source": "",
+          "tests": [],
+          "evidence": []
+        }
+      ],
+      "checks": [],
+      "escalation": ""
+    }
+  ],
+  "problem": "",
+  "words": "",
+  "beforeStart": "",
+  "touches": "",
+  "escalateIf": [],
+  "acceptance": [],
+  "doneWhen": [],
+  "reviewers": [],
+  "missing": []
+}
+
+Convert the following task text into the TaskFlow QA JSON described above.
+
+Task text:
+[PASTE THE FULL AIRTABLE TASK TEXT HERE]
+```
+
 # TaskFlow QA
 
 Windows desktop app for turning one Zoho CRM / Cloven Flex task into an implementation workspace, a paste-ready handoff, and an evidence document.
