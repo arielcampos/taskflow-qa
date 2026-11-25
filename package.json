@@ -2,7 +2,7 @@
   "name": "taskflow-qa",
   "productName": "TaskFlow QA",
   "version": "1.1.0",
-  "description": "TaskFlow QA desktop workspace for Zoho CRM / Cloven Flex tasks",
+  "description": "TaskFlow QA desktop workspace for Zoho CRM tasks",
   "main": "main.js",
   "private": true,
   "scripts": {

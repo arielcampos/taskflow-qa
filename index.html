@@ -387,7 +387,7 @@ dialog::backdrop{background:rgba(0,0,0,.5)}
 const ICON_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg>';
 const NO_CHANGES='Nothing changed outside the requirements.';
 const VIEWS=['implementation','context','impact','questions','evidence','handoff','tasks'];
-const PARSE_RULES=`You turn one Zoho CRM / Cloven Flex development task (plain text) into a structured Implementation & Testing workspace. Do not add features that the task does not ask for.
+const PARSE_RULES=`You turn one Zoho CRM development task (plain text) into a structured Implementation & Testing workspace. Do not add features that the task does not ask for.
 
 Parsing rules:
 - overview: what the work is, in plain language, 1 to 3 sentences, no field-level detail (no criteria, columns, sort or API names).
@@ -401,7 +401,7 @@ Parsing rules:
 - Reviewers go into reviewers.
 - Prerequisites, definitions and what the work touches are context only: background (definitions), prerequisites, impact. Never turn them into fake work items.
 - problem, words, beforeStart, touches: the task's own "The problem", "Words used here", "Before you start" and "What it touches" sections, copied VERBATIM with their line breaks (empty string if the task has no such section).
-- escalateIf: ONLY the escalation conditions: each point that describes a situation to escalate, copied verbatim including its instruction, for example "Merging households also moves or drops relationship links in a way the guide can't explain (VERIFY). Tell Di." One string per point. Do NOT include how to escalate, hand-off or handoff-comment instructions, reviewers, intros, or any other text from that section.
+- escalateIf: ONLY the escalation conditions: each point that describes a situation to escalate, copied verbatim including its instruction, for example "The existing view is locked by another user. Tell the reviewer." One string per point. Do NOT include how to escalate, hand-off or handoff-comment instructions, reviewers, intros, or any other text from that section.
 - acceptance: each Done When / acceptance point copied verbatim, one string per point.
 - doneWhen: the same criteria rewritten as already completed, using phrasing like "have been created", "has been applied", "have been posted", "have been met". Never "the views exist". End with "All acceptance criteria have been met."
 - missing: questions ONLY when a module, view name, count or sharing target is missing or ambiguous. Otherwise an empty list.
@@ -1416,10 +1416,10 @@ function itemForm(t,item){
   <label>View or deliverable name<input type="text" id="f_t" value="${esc(loc(i.title))}"></label>
   <label>One short sentence<span class="hint">No criteria, columns, sort or API names.</span><input type="text" id="f_s" value="${esc(i.sentence)}"></label>
   <label style="flex-direction:row;align-items:center;gap:8px;font-weight:500"><input type="checkbox" id="f_ex"${i.existing?' checked':''}> This view already exists; verify or adjust only</label>
-  <label>Steps<span class="hint">One step per line, only what the task states. Put a step’s required tests and evidence on the lines under it, starting with “evidence:” or “testing:”.</span><textarea id="f_steps" rows="7" placeholder="Create the view My Tasks Today&#10;Set sharing to Thien Tu Nguyen&#10;  evidence: Screenshot of the sharing settings&#10;  testing: Sharing shows Thien Tu Nguyen">${esc(planToText(i))}</textarea></label>
+  <label>Steps<span class="hint">One step per line, only what the task states. Put a step’s required tests and evidence on the lines under it, starting with “evidence:” or “testing:”.</span><textarea id="f_steps" rows="7" placeholder="Create the view My Tasks Today&#10;Set sharing to the named user&#10;  evidence: Screenshot of the sharing settings&#10;  testing: Sharing shows the named user">${esc(planToText(i))}</textarea></label>
   <label>Required for the whole item<span class="hint">Tests and evidence that apply to the whole item, one per line, starting with “evidence:” or “testing:”.</span><textarea id="f_checks" rows="3" placeholder="evidence: Record count posted in the handoff&#10;testing: View count matches the module filter count">${esc(ordered(i.checks).map(c=>(c.type==='evidence'?'evidence':'testing')+': '+c.text).join('\n'))}</textarea></label>
   <label>Source text<span class="hint">Passages of the original task about this item, copied exactly. Separate passages with a blank line.</span><textarea id="f_src" rows="4">${esc(i.source.join('\n\n'))}</textarea></label>
-  <label>What you’re building<span class="hint">One detail per line as “Label: detail”, only what the task states (Criteria, Columns, Sort, Sharing…).</span><textarea id="f_build" rows="4" placeholder="Criteria: Task Owner = me, Due Date = Today&#10;Sharing: Thien Tu Nguyen">${esc(i.build.map(b=>(b.label?b.label+': ':'')+b.text).join('\n'))}</textarea></label>
+  <label>What you’re building<span class="hint">One detail per line as “Label: detail”, only what the task states (Criteria, Columns, Sort, Sharing…).</span><textarea id="f_build" rows="4" placeholder="Criteria: Task Owner = me, Due Date = Today&#10;Sharing: the named user">${esc(i.build.map(b=>(b.label?b.label+': ':'')+b.text).join('\n'))}</textarea></label>
   <label>Fields used<span class="hint">Fields in the criteria, columns or sort, one per line. Shown under the module in the Impact Diagram.</span><textarea id="f_f" rows="3">${esc(i.fields.join('\n'))}</textarea></label>
   <label>Escalation Trigger<span class="hint">For Break Cases: when to escalate, as the task states it.</span><textarea id="f_x" rows="2">${esc(i.escalation)}</textarea></label>`,()=>{
     const title=$('#f_t').value.trim();if(!title){toast('Add a name for the subtask.');return false;}
@@ -1680,18 +1680,15 @@ $('#importFile').addEventListener('change',async e=>{
   catch(err){toast('Couldn’t import: '+(err.code||err.message));}
 });
 
-/* ---------- Example (accepted example, Task 2a.6) ---------- */
-const EXAMPLE={number:'2a.6',title:'Build saved views: my tasks, renewals in 45 days, refunds in progress, clean-up list',status:'Done',
-  overview:'Set up saved views in Zoho CRM so the team can see their tasks due today, track refunds in progress, and find contacts and policies that need clean-up.',
+/* ---------- Example (fictional sample, not a real task) ---------- */
+const EXAMPLE={number:'1.1',title:'Build a saved view for tasks due today',status:'Pending',
+  overview:'Create one saved view in Zoho CRM so a user can see only the open tasks assigned to them that are due today.',
   items:[
-    {kind:'work',title:'My Tasks Today',module:'Tasks',sentence:'A personal view of open tasks due today.',verification:['Filter count matches view count','Sharing set to the specified users'],evidence:['Screenshot of the edit page with criteria, columns, sort and sharing boxed','Record count'],done:true,filterCount:'0',viewCount:'0'},
-    {kind:'work',title:'Open Refunds',module:'Service Requests',existing:true,sentence:'An existing view of refunds still in progress, verified and adjusted.',verification:['Filter count matches view count','Sharing set to the specified users'],evidence:['Screenshot of the edit page with criteria, columns, sort and sharing boxed','Record count'],done:true,filterCount:'0',viewCount:'0'},
-    {kind:'work',title:'Clean-up: Contacts With No Salesforce ID',module:'Contacts',sentence:'A clean-up list of contacts missing their Salesforce link.',verification:['Filter count matches view count','Sharing set to the specified users'],evidence:['Screenshot of the edit page with criteria, columns, sort and sharing boxed','Record count'],done:true,filterCount:'220',viewCount:'220'},
-    {kind:'work',title:'Clean-up: Policies With No Person',module:'Insurance',sentence:'A clean-up list of policies not linked to a person.',verification:['Filter count matches view count','Sharing set to the specified users'],evidence:['Screenshot of the edit page with criteria, columns, sort and sharing boxed','Record count'],done:true,filterCount:'81',viewCount:'81'}
+    {kind:'work',title:'My Tasks Today',module:'Tasks',sentence:'A personal view of open tasks due today.',verification:['Filter count matches view count','Sharing set to the specified user'],evidence:['Screenshot of the edit page with criteria, columns, sort and sharing boxed','Record count'],done:false,filterCount:'',viewCount:''}
   ],
-  acceptance:['The three new views exist and are available.','Open Refunds has the specified criteria, columns, and sort.','All views have the correct sharing settings.','View names and counts are posted in the hand-off comment.'],
-  doneWhen:['The three new views have been created and are available.','Open Refunds has the specified criteria, columns, and sort applied.','All views have the correct sharing settings in place.','View names and counts have been posted in the hand-off comment.','All acceptance criteria have been met.'],
-  impact:['Tasks, Service Requests, Contacts and Insurance custom views']};
+  acceptance:['The view My Tasks Today has been created.','The view shows only tasks due today for the current user.','All acceptance criteria have been met.'],
+  doneWhen:['The view My Tasks Today has been created.','The view shows only tasks due today for the current user.','All acceptance criteria have been met.'],
+  impact:['Tasks custom views']};
 
 /* ---------- Boot ---------- */
 S.view=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):'implementation';

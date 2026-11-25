@@ -1,38 +1,40 @@
-# Notas para la próxima versión
+# Notes for a later version
 
-## Record IDs y Upload Screenshot por subtarea
+These are internal notes. They are not client tasks.
 
-Hoy Text Evidence (IDs, URLs, and Plain Text) y Upload Screenshot son secciones de la card del item, no de cada subtarea.
+## Record IDs and Upload Screenshot on each subtask
 
-En la próxima versión:
+Text Evidence (IDs, URLs, and Plain Text) and Upload Screenshot used to be sections of the item card, not of each subtask.
 
-- Text Evidence (IDs, URLs, and Plain Text) y Upload Screenshot deben ser botones en cada subtarea (cada Required Evidence), no solo en la card del item.
-- Al crear `evidence.docx`, titular cada Required Evidence y pegar debajo el o los screenshots de esa subtarea.
-- Lo mismo con los IDs: titular cada Required Evidence y poner debajo los IDs (y URL o texto, si se usaron) de esa subtarea.
+For a later version, if this is not already in place:
 
-No mezclar las capturas ni los IDs de una subtarea con los de otra.
+- Put Text Evidence and Upload Screenshot on each Required Evidence subtask, not only on the item card.
+- When creating `evidence.docx`, title each Required Evidence item and place its screenshots under that title.
+- Do the same for IDs: title each Required Evidence item and place its IDs, URLs, or text under that title.
 
-## Files and Folders en el panel derecho
+Do not mix screenshots or IDs from one subtask with those of another.
 
-Agregar una sección en el panel derecho llamada **Files and Folders**.
+## Files and Folders in the right panel
 
-- Guardar ahí toda referencia a archivos o carpetas que aparezca en la tarea.
-- Si es posible, cada referencia debe ser un link para abrirla rápido.
+Add a right-panel section named **Files and Folders**.
 
-## Handoff editable
+- Store every file or folder reference that appears in the task.
+- Where possible, make each reference a link that opens it.
 
-Permitir editar el handoff antes de enviarlo.
+## Editable handoff
+
+Allow the handoff to be edited before it is sent.
 
 ## Done When
 
-En la sección Done When, agregar al título `- Completed`. El título queda **Done When - Completed**.
+Add `- Completed` to the Done When section title. The title becomes **Done When - Completed**.
 
 ## Testing
 
-Hoy cada Testing Required solo se marca hecho o no hecho.
+Each Testing Required row used to be only done or not done.
 
-En la próxima versión, cada testing podría tener una de estas opciones:
+A later version can offer:
 
-1. Testing worked full
+1. Testing worked in full
 2. Testing worked partially
-3. Testing didn't work
+3. Testing did not work

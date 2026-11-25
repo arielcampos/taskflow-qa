@@ -77,7 +77,7 @@ Task text:
 
 # TaskFlow QA
 
-Windows desktop app for turning one Zoho CRM / Cloven Flex task into an implementation workspace, a paste-ready handoff, and an evidence document.
+Windows desktop app for turning one Zoho CRM development task into an implementation workspace, a paste-ready handoff, and an evidence document.
 
 Version 1.1.
 
@@ -110,10 +110,10 @@ Create a task by pasting JSON, or import a JSON file. A bilingual field looks li
 
 ```json
 {
-  "number": "2a.6",
+  "number": "1.1",
   "title": {
-    "en": "Create and verify custom views",
-    "es": "Crear y verificar vistas personalizadas"
+    "en": "Create a saved view for today's tasks",
+    "es": "Crear una vista guardada para las tareas de hoy"
   },
   "overview": { "en": "...", "es": "..." },
   "items": [],
